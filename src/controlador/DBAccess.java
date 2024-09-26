@@ -10,7 +10,10 @@ import clases.Enunciado;
 import clases.UnidadDidactica;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,17 +23,60 @@ public class DBAccess implements AccessManager{
     
         private Connection conectar() throws SQLException {
         // Configura la conexión a la base de datos
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/myusersdb", "root", "abcd*1234");
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/bd_adt", "root", "abcd*1234");
     }
 
     @Override
-    public UnidadDidactica crearUnidadDactica() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void crearUnidadDactica(UnidadDidactica uniDidac) {
+        
+                try (Connection conn = conectar();
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO unidadDidactica (id, acronimo, titulo, evaluacion, descripcion) VALUES (?, ?, ?, ?, ?)")) {
+        // Set the parameters for the PreparedStatement using the UnidadDidactica object
+        ps.setInt(1, uniDidac.getId());
+        ps.setString(2, uniDidac.getAcronimo());  // Assuming getAcronimo() returns a String
+        ps.setString(3, uniDidac.getTitulo());    // Assuming getTitulo() returns a String
+        ps.setString(4, uniDidac.getEvaluacion()); // Assuming getEvaluacion() returns a String
+        ps.setString(5, uniDidac.getDescripcion()); // Assuming getDescripcion() returns a String
+        
+        // Execute the insert command (executeUpdate returns the number of affected rows)
+        int rowsInserted = ps.executeUpdate();
+        
+        // Check if the insert was successful
+        if (rowsInserted > 0) {
+            System.out.println("A new UnidadDidactica was inserted successfully!");
+        }
+        
+    } catch (SQLException e) {
+        // Log the error in case of an SQL exception
+        Logger.getLogger("controlador").severe(e.getLocalizedMessage());
     }
+}
+
 
     @Override
-    public ConvocatoriaExamen crearConvocatoria() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void crearConvocatoria(ConvocatoriaExamen convoExam) {
+                ConvocatoriaExamen conExam = null;
+        
+                try (Connection conn = conectar();
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO unidadDidactica (convocatoria, descripcion, fecha, curso) VALUES (?, ?, ?, ?)")) {
+        // Set the parameters for the PreparedStatement using the UnidadDidactica object
+        ps.setString(1, conExam.getConvocatoria());
+        ps.setString(2, conExam.getDescripcion());  // Assuming getAcronimo() returns a String
+       ps.setDate(3, java.sql.Date.valueOf(conExam.getFecha()));    // Assuming getTitulo() returns a String
+        ps.setString(4, conExam.getCurso()); // Assuming getEvaluacion() returns a String
+        
+        // Execute the insert command (executeUpdate returns the number of affected rows)
+        int rowsInserted = ps.executeUpdate();
+        
+        // Check if the insert was successful
+        if (rowsInserted > 0) {
+            System.out.println("A new UnidadDidactica was inserted successfully!");
+        }
+        
+    } catch (SQLException e) {
+        // Log the error in case of an SQL exception
+        Logger.getLogger("controlador").severe(e.getLocalizedMessage());
+    }
     }
 
     @Override
@@ -57,5 +103,5 @@ public class DBAccess implements AccessManager{
     public Enunciado asignarEnunciadoAConvocatoria() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-}
+    }
+ 

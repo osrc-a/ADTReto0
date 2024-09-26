@@ -15,8 +15,8 @@ import clases.UnidadDidactica;
  */
 public interface AccessManager {
     
-    public UnidadDidactica crearUnidadDactica();
-    public ConvocatoriaExamen crearConvocatoria();
+    public void  crearUnidadDactica(UnidadDidactica uniDidac);
+    public void crearConvocatoria(ConvocatoriaExamen convoExam);
     public Enunciado crearEnunciadoDeUnidadConvocatoria();
     public void getEnunciadoUnidad();
     public void getExamenConEnunciadoConcreto();

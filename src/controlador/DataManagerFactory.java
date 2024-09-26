@@ -17,7 +17,7 @@ public class DataManagerFactory {
     
     public static AccessManager accederADatos(){
 
-        String tipoDao = ResourceBundle.getBundle("resources.readData").getString("dao.implementacion");
+        String tipoDao = ResourceBundle.getBundle("recursos.readData").getString("dao.implementacion");
         
          if ("archivo".equals(tipoDao)) {
             return new FileAccess();

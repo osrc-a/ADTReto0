@@ -15,15 +15,7 @@ import clases.UnidadDidactica;
  */
 public class FileAccess implements AccessManager{
 
-    @Override
-    public UnidadDidactica crearUnidadDactica() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
-    @Override
-    public ConvocatoriaExamen crearConvocatoria() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     public Enunciado crearEnunciadoDeUnidadConvocatoria() {
@@ -47,6 +39,16 @@ public class FileAccess implements AccessManager{
 
     @Override
     public Enunciado asignarEnunciadoAConvocatoria() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void crearUnidadDactica(UnidadDidactica uniDidac) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void crearConvocatoria(ConvocatoriaExamen convoExam) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
