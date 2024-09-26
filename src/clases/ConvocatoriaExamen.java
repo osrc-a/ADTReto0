@@ -7,21 +7,16 @@ public class ConvocatoriaExamen {
 
     // Atributos
     private int id;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
     private String convocatoria;
     private String descripcion;
     private LocalDate fecha;
     private String curso;
 
+
+
     // Constructores
-    public ConvocatoriaExamen(Integer Id, String convocatoria, String descripcion, LocalDate fecha, String curso) {
+
+    public ConvocatoriaExamen(int id, String convocatoria, String descripcion, LocalDate fecha, String curso) {
         this.id = id;
         this.convocatoria = convocatoria;
         this.descripcion = descripcion;
@@ -31,7 +26,14 @@ public class ConvocatoriaExamen {
 
     public ConvocatoriaExamen() {
     }
+    
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
     // Getters y setters 
     public String getConvocatoria() {
         return convocatoria;

@@ -22,7 +22,7 @@ create table unidadDidactica (
     descripcion varchar(100) not null);
     
 create table convocatoriaExamen (
-	id int primary key,
+    id int primary key,
     convocatoria varchar (50) not null,
     descripcion varchar (100) not null,
     fecha date not null,
