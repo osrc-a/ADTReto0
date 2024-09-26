@@ -13,6 +13,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -78,6 +79,55 @@ public class DBAccess implements AccessManager{
         Logger.getLogger("controlador").severe(e.getLocalizedMessage());
     }
     }
+    
+    public UnidadDidactica consultarIdUnidad(){
+            UnidadDidactica unidad=null;
+            ResultSet rs;
+            
+            try (Connection conn = conectar();
+             PreparedStatement ps = conn.prepareStatement("select * from unidadDidactica")) {
+                rs = ps.executeQuery();
+                if(rs.next()){
+                    
+                    
+                    unidad=new UnidadDidactica(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
+                }
+                        
+            } catch (SQLException ex) {
+                Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+            return unidad;
+            
+        }
+        
+        public ConvocatoriaExamen consultarIdConvocatoria(){
+                ConvocatoriaExamen convocatoria = null;
+                ResultSet rs;
+                
+            try (Connection conn = conectar();
+             PreparedStatement ps = conn.prepareStatement("select * from convocatoriaExamen")) {
+                rs = ps.executeQuery();
+                if(rs.next()){
+                    
+                    convocatoria=new ConvocatoriaExamen();
+                    
+                    convocatoria.setId(rs.getInt(1));
+                    convocatoria.setConvocatoria(rs.getString(2));
+                    convocatoria.setDescripcion(rs.getString(3));
+                    java.sql.Date fechaSQL = rs.getDate(4);
+		    convocatoria.setFecha(fechaSQL.toLocalDate());
+                    convocatoria.setCurso(rs.getNString(5));
+                }
+                
+                return convocatoria;
+            } catch (SQLException ex) {
+                Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            return convocatoria;
+        }
 
     @Override
     public Enunciado crearEnunciadoDeUnidadConvocatoria() {
