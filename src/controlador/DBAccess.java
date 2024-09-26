@@ -55,15 +55,15 @@ public class DBAccess implements AccessManager{
 
     @Override
     public void crearConvocatoria(ConvocatoriaExamen convoExam) {
-                ConvocatoriaExamen conExam = null;
         
                 try (Connection conn = conectar();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO unidadDidactica (convocatoria, descripcion, fecha, curso) VALUES (?, ?, ?, ?)")) {
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO convocatoriaexamen (id, convocatoria, descripcion, fecha, curso) VALUES (?, ?, ?, ?, ?)")) {
         // Set the parameters for the PreparedStatement using the UnidadDidactica object
-        ps.setString(1, conExam.getConvocatoria());
-        ps.setString(2, conExam.getDescripcion());  // Assuming getAcronimo() returns a String
-       ps.setDate(3, java.sql.Date.valueOf(conExam.getFecha()));    // Assuming getTitulo() returns a String
-        ps.setString(4, conExam.getCurso()); // Assuming getEvaluacion() returns a String
+        ps.setInt(1, convoExam.getId());
+        ps.setString(2, convoExam.getConvocatoria());
+        ps.setString(3, convoExam.getDescripcion());  // Assuming getAcronimo() returns a String
+       ps.setDate(4, java.sql.Date.valueOf(convoExam.getFecha()));    // Assuming getTitulo() returns a String
+        ps.setString(5, convoExam.getCurso()); // Assuming getEvaluacion() returns a String
         
         // Execute the insert command (executeUpdate returns the number of affected rows)
         int rowsInserted = ps.executeUpdate();

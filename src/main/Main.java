@@ -56,7 +56,7 @@ public class Main {
 
     private static void crearUnidadDidacticaMain() {
         System.out.println("== Crear Unidad Didáctica ==");
-        int id = Utilidades.leerInt("ID: ");
+        Integer id = Utilidades.leerInt("ID: ");
         String acronimo = Utilidades.introducirCadena("Acrónimo: ");
         String titulo = Utilidades.introducirCadena("Título: ");
         String evaluacion = Utilidades.introducirCadena("Evaluación: ");
@@ -69,12 +69,12 @@ public class Main {
 
     private static void crearConvocatoria() {
         System.out.println("== Crear Unidad Didáctica ==");
+        int id = Utilidades.leerInt("Id: ");
         String convocatoria = Utilidades.introducirCadena("Convocatoria: ");
         String descripcion = Utilidades.introducirCadena("Descripción: ");
         LocalDate fecha = Utilidades.pidoFechaDMA("Fecha (dd-mm-aaaa) :");
-        String curso = Utilidades.introducirCadena("Curso: ");
-        
-        ConvocatoriaExamen convocatoriaExam = new ConvocatoriaExamen(convocatoria, descripcion, fecha, curso);
+        String curso = Utilidades.introducirCadena("Curso: ");        
+        ConvocatoriaExamen convocatoriaExam = new ConvocatoriaExamen(id, convocatoria, descripcion, fecha, curso);
         DataManagerFactory.accederADatos().crearConvocatoria(convocatoriaExam);
     }
 }
