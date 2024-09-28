@@ -8,6 +8,7 @@ package controlador;
 import clases.ConvocatoriaExamen;
 import clases.Enunciado;
 import clases.UnidadDidactica;
+import java.util.List;
 
 /**
  *
@@ -15,20 +16,8 @@ import clases.UnidadDidactica;
  */
 public class FileAccess implements AccessManager{
 
-
-
     @Override
-    public Enunciado crearEnunciadoDeUnidadConvocatoria() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void getEnunciadoUnidad() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void getExamenConEnunciadoConcreto() {
+    public List<ConvocatoriaExamen> getExamenConEnunciadoConcreto(int idEnunciado) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -38,7 +27,7 @@ public class FileAccess implements AccessManager{
     }
 
     @Override
-    public Enunciado asignarEnunciadoAConvocatoria() {
+    public void asignarEnunciadoAConvocatoria(int idConvocatoria, int idEnunciado) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -49,6 +38,16 @@ public class FileAccess implements AccessManager{
 
     @Override
     public void crearConvocatoria(ConvocatoriaExamen convoExam) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void crearEnunciadoDeUnidadConvocatoria(Enunciado enunciado, int idUnidadDidactica, int idConvocatoria) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Enunciado> getEnunciadoUnidad(int idUnidadDidactica) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

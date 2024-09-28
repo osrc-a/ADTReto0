@@ -8,6 +8,7 @@ package controlador;
 import clases.ConvocatoriaExamen;
 import clases.Enunciado;
 import clases.UnidadDidactica;
+import java.util.List;
 
 /**
  *
@@ -17,9 +18,9 @@ public interface AccessManager {
     
     public void  crearUnidadDactica(UnidadDidactica uniDidac);
     public void crearConvocatoria(ConvocatoriaExamen convoExam);
-    public Enunciado crearEnunciadoDeUnidadConvocatoria();
-    public void getEnunciadoUnidad();
-    public void getExamenConEnunciadoConcreto();
+    public void crearEnunciadoDeUnidadConvocatoria(Enunciado enunciado, int idUnidadDidactica, int idConvocatoria);
+    public List<Enunciado> getEnunciadoUnidad(int idUnidadDidactica);
+    public List<ConvocatoriaExamen> getExamenConEnunciadoConcreto(int idEnunciado);
     public void getDocumentEnunciado();
-    public Enunciado asignarEnunciadoAConvocatoria();
+    public void asignarEnunciadoAConvocatoria(int idConvocatoria, int idEnunciado);
 }

@@ -6,6 +6,7 @@
 package controlador;
 
 import clases.ConvocatoriaExamen;
+import clases.Dificultad;
 import clases.Enunciado;
 import clases.UnidadDidactica;
 import java.sql.Connection;
@@ -13,6 +14,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -20,138 +23,259 @@ import java.util.logging.Logger;
  *
  * @author oscar
  */
-public class DBAccess implements AccessManager{
-    
-        private Connection conectar() throws SQLException {
+public class DBAccess implements AccessManager {
+
+    private Connection conectar() throws SQLException {
         // Configura la conexión a la base de datos
         return DriverManager.getConnection("jdbc:mysql://localhost:3306/bd_adt", "root", "abcd*1234");
     }
 
     @Override
     public void crearUnidadDactica(UnidadDidactica uniDidac) {
-        
-                try (Connection conn = conectar();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO unidadDidactica (id, acronimo, titulo, evaluacion, descripcion) VALUES (?, ?, ?, ?, ?)")) {
-        // Set the parameters for the PreparedStatement using the UnidadDidactica object
-        ps.setInt(1, uniDidac.getId());
-        ps.setString(2, uniDidac.getAcronimo());  // Assuming getAcronimo() returns a String
-        ps.setString(3, uniDidac.getTitulo());    // Assuming getTitulo() returns a String
-        ps.setString(4, uniDidac.getEvaluacion()); // Assuming getEvaluacion() returns a String
-        ps.setString(5, uniDidac.getDescripcion()); // Assuming getDescripcion() returns a String
-        
-        // Execute the insert command (executeUpdate returns the number of affected rows)
-        int rowsInserted = ps.executeUpdate();
-        
-        // Check if the insert was successful
-        if (rowsInserted > 0) {
-            System.out.println("A new UnidadDidactica was inserted successfully!");
-        }
-        
-    } catch (SQLException e) {
-        // Log the error in case of an SQL exception
-        Logger.getLogger("controlador").severe(e.getLocalizedMessage());
-    }
-}
 
+        try (Connection conn = conectar();
+                PreparedStatement ps = conn.prepareStatement("INSERT INTO unidadDidactica (id, acronimo, titulo, evaluacion, descripcion) VALUES (?, ?, ?, ?, ?)")) {
+
+            ps.setInt(1, uniDidac.getId());
+            ps.setString(2, uniDidac.getAcronimo());  
+            ps.setString(3, uniDidac.getTitulo());    
+            ps.setString(4, uniDidac.getEvaluacion()); 
+            ps.setString(5, uniDidac.getDescripcion()); 
+
+           
+            int rowsInserted = ps.executeUpdate();
+
+           
+            if (rowsInserted > 0) {
+                System.out.println("A new UnidadDidactica was inserted successfully!");
+            }
+
+        } catch (SQLException e) {
+           
+            Logger.getLogger("controlador").severe(e.getLocalizedMessage());
+        }
+    }
 
     @Override
     public void crearConvocatoria(ConvocatoriaExamen convoExam) {
-        
-                try (Connection conn = conectar();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO convocatoriaexamen (id, convocatoria, descripcion, fecha, curso) VALUES (?, ?, ?, ?, ?)")) {
-        // Set the parameters for the PreparedStatement using the UnidadDidactica object
-        ps.setInt(1, convoExam.getId());
-        ps.setString(2, convoExam.getConvocatoria());
-        ps.setString(3, convoExam.getDescripcion());  // Assuming getAcronimo() returns a String
-       ps.setDate(4, java.sql.Date.valueOf(convoExam.getFecha()));    // Assuming getTitulo() returns a String
-        ps.setString(5, convoExam.getCurso()); // Assuming getEvaluacion() returns a String
-        
-        // Execute the insert command (executeUpdate returns the number of affected rows)
-        int rowsInserted = ps.executeUpdate();
-        
-        // Check if the insert was successful
-        if (rowsInserted > 0) {
-            System.out.println("A new UnidadDidactica was inserted successfully!");
+
+        try (Connection conn = conectar();
+                PreparedStatement ps = conn.prepareStatement("INSERT INTO convocatoriaexamen (id, convocatoria, descripcion, fecha, curso) VALUES (?, ?, ?, ?, ?)")) {
+      
+            ps.setInt(1, convoExam.getId());
+            ps.setString(2, convoExam.getConvocatoria());
+            ps.setString(3, convoExam.getDescripcion()); 
+            ps.setDate(4, java.sql.Date.valueOf(convoExam.getFecha()));
+            ps.setString(5, convoExam.getCurso()); 
+
+
+            int rowsInserted = ps.executeUpdate();
+
+
+            if (rowsInserted > 0) {
+                System.out.println("A new UnidadDidactica was inserted successfully!");
+            }
+
+        } catch (SQLException e) {
+
+            Logger.getLogger("controlador").severe(e.getLocalizedMessage());
         }
+    }
+
+public UnidadDidactica consultarIdUnidad(int idUnidad) {
+    UnidadDidactica unidad = null;
+    ResultSet rs;
+
+    try (Connection conn = conectar();
+         PreparedStatement ps = conn.prepareStatement("SELECT * FROM unidadDidactica WHERE id = ?")) {
+        ps.setInt(1, idUnidad); // Establecer el idUnidad en el PreparedStatement
+        rs = ps.executeQuery();
         
+        if (rs.next()) {
+            unidad = new UnidadDidactica(
+                rs.getInt(1), 
+                rs.getString(2), 
+                rs.getString(3), 
+                rs.getString(4), 
+                rs.getString(5)
+            );
+        }
+
+    } catch (SQLException ex) {
+        Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+    return unidad;
+}
+
+public ConvocatoriaExamen consultarIdConvocatoria(int idConvocatoria) {
+    ConvocatoriaExamen convocatoria = null;
+    ResultSet rs;
+
+    try (Connection conn = conectar();
+         PreparedStatement ps = conn.prepareStatement("SELECT * FROM convocatoriaExamen WHERE id = ?")) {
+        ps.setInt(1, idConvocatoria); 
+        rs = ps.executeQuery();
+        
+        if (rs.next()) {
+            convocatoria = new ConvocatoriaExamen();
+            convocatoria.setId(rs.getInt(1));
+            convocatoria.setConvocatoria(rs.getString(2));
+            convocatoria.setDescripcion(rs.getString(3));
+            java.sql.Date fechaSQL = rs.getDate(4);
+            convocatoria.setFecha(fechaSQL.toLocalDate());
+            convocatoria.setCurso(rs.getString(5));
+        }
+
+    } catch (SQLException ex) {
+        Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+    return convocatoria; 
+}
+
+ @Override
+public void crearEnunciadoDeUnidadConvocatoria(Enunciado enunciado, int idUnidadDidactica, int idConvocatoria) {
+    try (Connection conn = conectar()) {
+        
+        String insertEnunciadoQuery = "INSERT INTO enunciado (id, descripcion, nivel, disponible, ruta) VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement psEnunciado = conn.prepareStatement(insertEnunciadoQuery)) {
+
+            psEnunciado.setInt(1, enunciado.getId());
+            psEnunciado.setString(2, enunciado.getDescripcion());
+            psEnunciado.setString(3, enunciado.getNivel().name());
+            psEnunciado.setBoolean(4, enunciado.isDisponible());
+            psEnunciado.setString(5, enunciado.getRuta());
+
+
+            int rowsInserted = psEnunciado.executeUpdate();
+
+            if (rowsInserted > 0) {
+                System.out.println("Enunciado creado con éxito.");
+            }
+
+           
+            UnidadDidactica unidad = consultarIdUnidad(idUnidadDidactica);
+            if (unidad != null) {
+               
+                String insertRelacionQuery = "INSERT INTO tiene (idUnidad, idEnunciado) VALUES (?, ?)";
+
+                try (PreparedStatement psRelacion = conn.prepareStatement(insertRelacionQuery)) {
+                    psRelacion.setInt(1, unidad.getId()); 
+                    psRelacion.setInt(2, enunciado.getId()); 
+
+                    int rowsRelacion = psRelacion.executeUpdate();
+                    if (rowsRelacion > 0) {
+                        System.out.println("Relación entre enunciado y unidad creada con éxito.");
+                    }
+                }
+            } else {
+                System.out.println("No se encontró ninguna unidad didáctica con el ID proporcionado.");
+            }
+
+  
+            ConvocatoriaExamen convocatoria = consultarIdConvocatoria(idConvocatoria);
+            if (convocatoria != null) {
+              
+                String updateConvocatoriaQuery = "UPDATE convocatoriaExamen SET idEnunciado = ? WHERE id = ?";
+
+                try (PreparedStatement psConvocatoria = conn.prepareStatement(updateConvocatoriaQuery)) {
+                    psConvocatoria.setInt(1, enunciado.getId()); 
+                    psConvocatoria.setInt(2, convocatoria.getId()); 
+
+                    int rowsConvocatoria = psConvocatoria.executeUpdate();
+                    if (rowsConvocatoria > 0) {
+                        System.out.println("Convocatoria actualizada con éxito.");
+                    }
+                }
+            } else {
+                System.out.println("No se encontró ninguna convocatoria con el ID proporcionado.");
+            }
+
+        }
     } catch (SQLException e) {
-        // Log the error in case of an SQL exception
-        Logger.getLogger("controlador").severe(e.getLocalizedMessage());
+        e.printStackTrace();
     }
-    }
-    
-    public UnidadDidactica consultarIdUnidad(){
-            UnidadDidactica unidad=null;
-            ResultSet rs;
-            
-            try (Connection conn = conectar();
-             PreparedStatement ps = conn.prepareStatement("select * from unidadDidactica")) {
-                rs = ps.executeQuery();
-                if(rs.next()){
-                    
-                    
-                    unidad=new UnidadDidactica(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
-                }
-                        
-            } catch (SQLException ex) {
-                Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
+}
+
+    @Override
+    public List<Enunciado> getEnunciadoUnidad(int idUnidadDidactica) {
+        List<Enunciado> enunciados = new ArrayList<>();
+        ResultSet rs;
+
+        try (Connection conn = conectar();
+                PreparedStatement ps = conn.prepareStatement("SELECT e.id, e.descripcion,"
+                        + " e.nivel, e.disponible, e.ruta FROM enunciado e INNER JOIN tiene"
+                        + " t ON e.id = t.idEnunciado WHERE t.idUnidad = ?")) {
+            ps.setInt(1, idUnidadDidactica);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Enunciado enunciado = new Enunciado(
+                        rs.getInt("id"),
+                        rs.getString("descripcion"),
+                        Dificultad.valueOf(rs.getString("nivel")),
+                        rs.getBoolean("disponible"),
+                        rs.getString("ruta")
+                );
+                enunciados.add(enunciado);
             }
-            
-            
-            return unidad;
-            
-        }
-        
-        public ConvocatoriaExamen consultarIdConvocatoria(){
-                ConvocatoriaExamen convocatoria = null;
-                ResultSet rs;
-                
-            try (Connection conn = conectar();
-             PreparedStatement ps = conn.prepareStatement("select * from convocatoriaExamen")) {
-                rs = ps.executeQuery();
-                if(rs.next()){
-                    
-                    convocatoria=new ConvocatoriaExamen();
-                    
-                    convocatoria.setId(rs.getInt(1));
-                    convocatoria.setConvocatoria(rs.getString(2));
-                    convocatoria.setDescripcion(rs.getString(3));
-                    java.sql.Date fechaSQL = rs.getDate(4);
-		    convocatoria.setFecha(fechaSQL.toLocalDate());
-                    convocatoria.setCurso(rs.getNString(5));
-                }
-                
-                return convocatoria;
-            } catch (SQLException ex) {
-                Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            return convocatoria;
+
+        } catch (SQLException e) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, e);
         }
 
-    @Override
-    public Enunciado crearEnunciadoDeUnidadConvocatoria() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return enunciados;
     }
 
     @Override
-    public void getEnunciadoUnidad() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public List<ConvocatoriaExamen> getExamenConEnunciadoConcreto(int idEnunciado) {
+        List<ConvocatoriaExamen> convocatorias = new ArrayList<>();
+        ResultSet rs;
 
-    @Override
-    public void getExamenConEnunciadoConcreto() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try (Connection conn = conectar();
+                PreparedStatement ps = conn.prepareStatement("SELECT * FROM convocatoriaExamen WHERE idEnunciado = ?")) {
+            ps.setInt(1, idEnunciado);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                ConvocatoriaExamen convocatoria = new ConvocatoriaExamen(
+                        rs.getInt("id"),
+                        rs.getString("convocatoria"),
+                        rs.getString("descripcion"),
+                        rs.getDate("fecha").toLocalDate(),
+                        rs.getString("curso")
+                );
+                convocatorias.add(convocatoria);
+            }
+
+        } catch (SQLException e) {
+            Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, e);
+        }
+
+        return convocatorias;
     }
 
     @Override
     public void getDocumentEnunciado() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
 
-    @Override
-    public Enunciado asignarEnunciadoAConvocatoria() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+@Override
+public void asignarEnunciadoAConvocatoria(int idConvocatoria, int idEnunciado) {
+    try (Connection conn = conectar();
+         PreparedStatement ps = conn.prepareStatement("UPDATE convocatoriaExamen SET idEnunciado = ? WHERE id = ?")) {
+        ps.setInt(1, idEnunciado);
+        ps.setInt(2, idConvocatoria);
+
+        int rowsUpdated = ps.executeUpdate();
+        if (rowsUpdated > 0) {
+            System.out.println("Enunciado asignado a la convocatoria con éxito.");
+        }
+
+    } catch (SQLException e) {
+        Logger.getLogger(DBAccess.class.getName()).log(Level.SEVERE, null, e);
     }
-    }
- 
+}
+}
