@@ -12,10 +12,7 @@ public class ConvocatoriaExamen {
     private LocalDate fecha;
     private String curso;
 
-
-
     // Constructores
-
     public ConvocatoriaExamen(int id, String convocatoria, String descripcion, LocalDate fecha, String curso) {
         this.id = id;
         this.convocatoria = convocatoria;
@@ -26,7 +23,7 @@ public class ConvocatoriaExamen {
 
     public ConvocatoriaExamen() {
     }
-    
+
     public int getId() {
         return id;
     }
@@ -34,6 +31,7 @@ public class ConvocatoriaExamen {
     public void setId(int id) {
         this.id = id;
     }
+
     // Getters y setters 
     public String getConvocatoria() {
         return convocatoria;
@@ -65,6 +63,17 @@ public class ConvocatoriaExamen {
 
     public void setCurso(String curso) {
         this.curso = curso;
+    }
+
+    @Override
+    public String toString() {
+        return "ConvocatoriaExamen {"
+                + "\n  ID            : " + id
+                + "\n  Convocatoria  : " + convocatoria
+                + "\n  Descripción   : " + descripcion
+                + "\n  Fecha         : " + fecha
+                + "\n  Curso         : " + curso
+                + "\n}";
     }
 
 }
